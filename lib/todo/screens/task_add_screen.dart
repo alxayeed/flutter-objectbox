@@ -9,9 +9,9 @@ class TaskAddScreen extends StatefulWidget {
   final ObjectBox objectBox;
 
   const TaskAddScreen({
-    super.key,
+    Key? key,
     required this.objectBox,
-  });
+  }) : super(key: key);
 
   @override
   State<TaskAddScreen> createState() => _TaskAddScreenState();
@@ -51,21 +51,34 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      final Uint8List? imageBytes = await FileManager.captureImageFromCamera();
+                      final Uint8List? imageBytes =
+                      await FileManager.captureImageFromCamera();
                       setState(() {
                         _fileData = imageBytes;
                       });
                     },
-                    child: const Text('Capture Image'),
+                    child: const Icon(Icons.camera_alt),
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      final Uint8List? imageBytes = await FileManager.pickImageFromGallery();
+                      final Uint8List? imageBytes =
+                      await FileManager.pickImageFromGallery();
                       setState(() {
                         _fileData = imageBytes;
+                        print(_fileData);
                       });
                     },
-                    child: const Text('Upload from Gallery'),
+                    child: const Icon(Icons.image),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      // final Uint8List? fileBytes =
+                      // await FileManager.pickFileFromStorage();
+                      // setState(() {
+                      //   _fileData = fileBytes;
+                      // });
+                    },
+                    child: const Icon(Icons.file_copy),
                   ),
                 ],
               ),
