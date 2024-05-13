@@ -65,22 +65,30 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
                   height: 100,
                   width: 100,
                 ),
-              MaterialButton(
-                onPressed: () async {
-                  final Uint8List? imageBytes = await FileManger.captureImageFromCamera();
-                  setState(() {
-                    widget.task.fileData = imageBytes;
-                  });
-                },
-                color: Colors.blue,
-                child: const SizedBox(
-                  child: Center(
-                    child: Text(
-                      "Capture Image",
-                      style: TextStyle(color: Colors.white),
-                    ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      final Uint8List? imageBytes =
+                      await FileManager.captureImageFromCamera();
+                      setState(() {
+                        widget.task.fileData = imageBytes;
+                      });
+                    },
+                    child: const Text('Capture Image'),
                   ),
-                ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final Uint8List? imageBytes =
+                      await FileManager.pickImageFromGallery();
+                      setState(() {
+                        widget.task.fileData = imageBytes;
+                      });
+                    },
+                    child: const Text('Upload from Gallery'),
+                  ),
+                ],
               ),
               MaterialButton(
                 onPressed: () {
@@ -99,7 +107,6 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
               ),
             ],
           ),
-          // color: Colors.blue,
         ),
       ),
     );
