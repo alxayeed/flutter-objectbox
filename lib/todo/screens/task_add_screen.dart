@@ -10,8 +10,8 @@ class TaskAddScreen extends StatelessWidget {
     required this.objectBox,
   });
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

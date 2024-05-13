@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_objectbox/objectbox.dart';
 import 'package:flutter_objectbox/todo/screens/task_list_screen.dart';
 
-
 late ObjectBox objectBox;
 
 void main() async {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_objectbox/objectbox.dart';
 import 'package:flutter_objectbox/todo/model/task_model.dart';
 import 'package:flutter_objectbox/todo/screens/task_add_screen.dart';
-import 'package:flutter_objectbox/todo/screens/task_update_screen.dart';
 import 'package:flutter_objectbox/todo/screens/widgets/task_item.dart';
 
 class TaskListScreen extends StatelessWidget {
@@ -27,19 +26,84 @@ class TaskListScreen extends StatelessWidget {
         stream: objectBox.getAllTask(),
         builder:
             (BuildContext context, AsyncSnapshot<List<TaskModel>> snapshot) {
-          if (snapshot.data!.isNotEmpty) {
-            return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  TaskModel task = snapshot.data![index];
-                  return TaskItem(
-                    task: task,
-                    objectBox: objectBox,
-                  );
-                });
+          List<Widget> children;
+          if (snapshot.hasError) {
+            children = <Widget>[
+              const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Error: ${snapshot.error}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text('Stack trace: ${snapshot.stackTrace}'),
+              ),
+            ];
           } else {
-            return const Center(child: Text("No data found"));
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                children = const <Widget>[
+                  Icon(
+                    Icons.info,
+                    color: Colors.blue,
+                    size: 60,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Select a lot'),
+                  ),
+                ];
+              case ConnectionState.waiting:
+                children = const <Widget>[
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CircularProgressIndicator(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Looking for tasks...'),
+                  ),
+                ];
+              case ConnectionState.active:
+                children = <Widget>[
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          TaskModel task = snapshot.data![index];
+                          return TaskItem(
+                            task: task,
+                            objectBox: objectBox,
+                          );
+                        }),
+                  )
+                ];
+              case ConnectionState.done:
+                children = <Widget>[
+                  const Icon(
+                    Icons.info,
+                    color: Colors.blue,
+                    size: 60,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text('\$${snapshot.data} (closed)'),
+                  ),
+                ];
+            }
           }
+
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            ),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
