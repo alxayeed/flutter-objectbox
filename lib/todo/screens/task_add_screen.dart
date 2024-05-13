@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_objectbox/objectbox.dart';
 import 'package:flutter_objectbox/todo/model/task_model.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_objectbox/todo/utility/file_manager.dart';
 
 class TaskAddScreen extends StatefulWidget {
   final ObjectBox objectBox;
@@ -48,7 +48,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                 ),
               MaterialButton(
                 onPressed: () async {
-                  final Uint8List? imageBytes = await _captureImageFromCamera();
+                  final Uint8List? imageBytes = await FileManger.captureImageFromCamera();
                   setState(() {
                     _fileData = imageBytes;
                   });
@@ -90,16 +90,5 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
         ),
       ),
     );
-  }
-
-  Future<Uint8List?> _captureImageFromCamera() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
-
-    if (pickedFile != null) {
-      return await pickedFile.readAsBytes();
-    }
-
-    return null;
   }
 }

@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_objectbox/objectbox.dart';
 import 'package:flutter_objectbox/todo/model/task_model.dart';
+import 'package:flutter_objectbox/todo/utility/file_manager.dart';
 
 class TaskUpdateScreen extends StatefulWidget {
   final ObjectBox objectBox;
@@ -38,42 +41,66 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Center(child: Text("Update Task")),
-      content: SizedBox(
-        height: 200,
-        width: 400,
-        child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              onChanged: (value) {
-                widget.task.name = value;
-              },
-            ),
-            TextField(
-              controller: descriptionController,
-              onChanged: (value) {
-                widget.task.description = value;
-              },
-            ),
-            const SizedBox(height: 10),
-            MaterialButton(
-              onPressed: () {
-                widget.objectBox.updateTask(widget.task);
-                Navigator.pop(context);
-              },
-              color: Colors.green,
-              child: const SizedBox(
-                child: Center(
-                  child: Text(
-                    "Update",
-                    style: TextStyle(color: Colors.white),
+      content: IntrinsicHeight(
+        child: SizedBox(
+          width: 400,
+          child: Column(
+            children: [
+              TextField(
+                controller: nameController,
+                onChanged: (value) {
+                  widget.task.name = value;
+                },
+              ),
+              TextField(
+                controller: descriptionController,
+                onChanged: (value) {
+                  widget.task.description = value;
+                },
+              ),
+              const SizedBox(height: 10),
+              if (widget.task.fileData != null)
+                Image.memory(
+                  widget.task.fileData!,
+                  height: 100,
+                  width: 100,
+                ),
+              MaterialButton(
+                onPressed: () async {
+                  final Uint8List? imageBytes = await FileManger.captureImageFromCamera();
+                  setState(() {
+                    widget.task.fileData = imageBytes;
+                  });
+                },
+                color: Colors.blue,
+                child: const SizedBox(
+                  child: Center(
+                    child: Text(
+                      "Capture Image",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              MaterialButton(
+                onPressed: () {
+                  widget.objectBox.updateTask(widget.task);
+                  Navigator.pop(context);
+                },
+                color: Colors.green,
+                child: const SizedBox(
+                  child: Center(
+                    child: Text(
+                      "Update",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // color: Colors.blue,
         ),
-        // color: Colors.blue,
       ),
     );
   }
