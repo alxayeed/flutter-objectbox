@@ -55,6 +55,16 @@ class TaskItem extends StatelessWidget {
           );
         },
         child: ListTile(
+          leading: task.fileData != null
+              ? Image.memory(
+                  task.fileData!,
+                  width: 50,
+                  height: 50,
+                )
+              : const SizedBox(
+                  height: 50,
+                  width: 50,
+                ),
           title: Text(task.name),
           subtitle: Text(task.description),
           trailing: IconButton(

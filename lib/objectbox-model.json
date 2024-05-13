@@ -5,14 +5,14 @@
   "entities": [
     {
       "id": "1:6506280737746614672",
-      "lastPropertyId": "3:8768594268544276644",
+      "lastPropertyId": "4:4436066020409767031",
       "name": "TaskModel",
       "properties": [
         {
           "id": "1:4864794782562740896",
           "name": "id",
           "type": 6,
-          "flags": 1
+          "flags": 129
         },
         {
           "id": "2:3413268009910254585",
@@ -23,6 +23,11 @@
           "id": "3:8768594268544276644",
           "name": "description",
           "type": 9
+        },
+        {
+          "id": "4:4436066020409767031",
+          "name": "fileData",
+          "type": 23
         }
       ],
       "relations": []

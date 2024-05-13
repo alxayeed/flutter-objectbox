@@ -23,14 +23,14 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 6506280737746614672),
       name: 'TaskModel',
-      lastPropertyId: const obx_int.IdUid(3, 8768594268544276644),
+      lastPropertyId: const obx_int.IdUid(4, 4436066020409767031),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(1, 4864794782562740896),
             name: 'id',
             type: 6,
-            flags: 1),
+            flags: 129),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(2, 3413268009910254585),
             name: 'name',
@@ -40,6 +40,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(3, 8768594268544276644),
             name: 'description',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 4436066020409767031),
+            name: 'fileData',
+            type: 23,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -105,10 +110,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectToFB: (TaskModel object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
           final descriptionOffset = fbb.writeString(object.description);
-          fbb.startTable(4);
+          final fileDataOffset = object.fileData == null
+              ? null
+              : fbb.writeListInt8(object.fileData!);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, descriptionOffset);
+          fbb.addOffset(3, fileDataOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -122,8 +131,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final descriptionParam =
               const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, '');
+          final fileDataParam = const fb.Uint8ListReader(lazy: false)
+              .vTableGetNullable(buffer, rootOffset, 10) as Uint8List?;
           final object = TaskModel(
-              id: idParam, name: nameParam, description: descriptionParam);
+              id: idParam,
+              name: nameParam,
+              description: descriptionParam,
+              fileData: fileDataParam);
 
           return object;
         })
@@ -145,4 +159,8 @@ class TaskModel_ {
   /// see [TaskModel.description]
   static final description =
       obx.QueryStringProperty<TaskModel>(_entities[0].properties[2]);
+
+  /// see [TaskModel.fileData]
+  static final fileData =
+      obx.QueryByteVectorProperty<TaskModel>(_entities[0].properties[3]);
 }
