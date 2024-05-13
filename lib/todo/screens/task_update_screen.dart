@@ -36,42 +36,45 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      width: 400,
-      child: Column(
-        children: [
-          TextField(
-            controller: nameController,
-            onChanged: (value){
-              widget.task.name = value;
-            },
-          ),
-          TextField(
-            controller: descriptionController,
-            onChanged: (value){
-              widget.task.description = value;
-            },
-          ),
-          const SizedBox(height: 10),
-          MaterialButton(
-            onPressed: () {
-              widget.objectBox.updateTask(widget.task);
-              Navigator.pop(context);
-            },
-            color: Colors.green,
-            child: const SizedBox(
-              child: Center(
-                child: Text(
-                  "Update",
-                  style: TextStyle(color: Colors.white),
+    return AlertDialog(
+      title: const Center(child: Text("Update Task")),
+      content: SizedBox(
+        height: 200,
+        width: 400,
+        child: Column(
+          children: [
+            TextField(
+              controller: nameController,
+              onChanged: (value) {
+                widget.task.name = value;
+              },
+            ),
+            TextField(
+              controller: descriptionController,
+              onChanged: (value) {
+                widget.task.description = value;
+              },
+            ),
+            const SizedBox(height: 10),
+            MaterialButton(
+              onPressed: () {
+                widget.objectBox.updateTask(widget.task);
+                Navigator.pop(context);
+              },
+              color: Colors.green,
+              child: const SizedBox(
+                child: Center(
+                  child: Text(
+                    "Update",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+        // color: Colors.blue,
       ),
-      // color: Colors.blue,
     );
   }
 }

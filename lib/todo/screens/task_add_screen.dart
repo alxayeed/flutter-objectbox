@@ -15,41 +15,44 @@ class TaskAddScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      width: 400,
-      child: Column(
-        children: [
-          TextField(
-            controller: nameController,
-          ),
-          TextField(
-            controller: descriptionController,
-          ),
-          const SizedBox(height: 10),
-          MaterialButton(
-            onPressed: () {
-              objectBox.addTask(
-                TaskModel(
-                  name: nameController.text,
-                  description: descriptionController.text,
-                ),
-              );
-              Navigator.pop(context);
-            },
-            color: Colors.blue,
-            child: const SizedBox(
-              child: Center(
-                child: Text(
-                  "Add",
-                  style: TextStyle(color: Colors.white),
+    return AlertDialog(
+      title: const Center(child: Text("Add Task")),
+      content: SizedBox(
+        height: 200,
+        width: 400,
+        child: Column(
+          children: [
+            TextField(
+              controller: nameController,
+            ),
+            TextField(
+              controller: descriptionController,
+            ),
+            const SizedBox(height: 10),
+            MaterialButton(
+              onPressed: () {
+                objectBox.addTask(
+                  TaskModel(
+                    name: nameController.text,
+                    description: descriptionController.text,
+                  ),
+                );
+                Navigator.pop(context);
+              },
+              color: Colors.blue,
+              child: const SizedBox(
+                child: Center(
+                  child: Text(
+                    "Add",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+        // color: Colors.blue,
       ),
-      // color: Colors.blue,
     );
   }
 }
