@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_objectbox/objectbox.dart';
+import 'package:flutter_objectbox/todo/model/task_model.dart';
 
 class TaskAddScreen extends StatelessWidget {
-  TaskAddScreen({super.key});
+  final ObjectBox objectBox;
+
+  TaskAddScreen({
+    super.key,
+    required this.objectBox,
+  });
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -22,7 +29,12 @@ class TaskAddScreen extends StatelessWidget {
           const SizedBox(height: 10),
           MaterialButton(
             onPressed: () {
-              //TODO add to box
+              objectBox.addTask(
+                TaskModel(
+                  name: nameController.text,
+                  description: descriptionController.text,
+                ),
+              );
               Navigator.pop(context);
             },
             color: Colors.blue,

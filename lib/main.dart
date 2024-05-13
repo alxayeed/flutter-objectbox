@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_objectbox/objectbox.dart';
 import 'package:flutter_objectbox/todo/screens/task_list_screen.dart';
 
-void main() {
+
+late ObjectBox objectBox;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  objectBox = await ObjectBox.create();
+
   runApp(const MainApp());
 }
 
@@ -10,10 +17,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: TaskListScreen(),
+        body: TaskListScreen(objectBox: objectBox),
       ),
     );
   }
