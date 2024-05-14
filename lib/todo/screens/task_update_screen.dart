@@ -60,11 +60,14 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
               ),
               const SizedBox(height: 10),
               if (widget.task.fileData != null)
-                Image.memory(
-                  widget.task.fileData!,
-                  height: 100,
-                  width: 100,
+                Expanded(
+                  child: Image.memory(
+                    widget.task.fileData!,
+                    height: 300,
+                    width: 300,
+                  ),
                 ),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -76,7 +79,7 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
                         widget.task.fileData = imageBytes;
                       });
                     },
-                    child: const Text('Capture Image'),
+                    child: const Icon(Icons.camera_alt),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -86,7 +89,7 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
                         widget.task.fileData = imageBytes;
                       });
                     },
-                    child: const Text('Upload from Gallery'),
+                    child: const Icon(Icons.image),
                   ),
                 ],
               ),

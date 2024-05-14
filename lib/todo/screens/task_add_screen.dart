@@ -41,10 +41,12 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
               ),
               const SizedBox(height: 10),
               if (_fileData != null)
-                Image.memory(
-                  _fileData!,
-                  height: 100,
-                  width: 100,
+                Expanded(
+                  child: Image.memory(
+                    _fileData!,
+                    height: 300,
+                    width: 300,
+                  ),
                 ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -65,21 +67,20 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                       await FileManager.pickImageFromGallery();
                       setState(() {
                         _fileData = imageBytes;
-                        print(_fileData);
                       });
                     },
                     child: const Icon(Icons.image),
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // final Uint8List? fileBytes =
-                      // await FileManager.pickFileFromStorage();
-                      // setState(() {
-                      //   _fileData = fileBytes;
-                      // });
-                    },
-                    child: const Icon(Icons.file_copy),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () async {
+                  //     // final Uint8List? fileBytes =
+                  //     // await FileManager.pickFileFromStorage();
+                  //     // setState(() {
+                  //     //   _fileData = fileBytes;
+                  //     // });
+                  //   },
+                  //   child: const Icon(Icons.file_copy),
+                  // ),
                 ],
               ),
               const SizedBox(height: 10),
