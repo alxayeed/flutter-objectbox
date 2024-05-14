@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_objectbox/objectbox.dart';
 import 'package:flutter_objectbox/todo/model/task_model.dart';
+import 'package:flutter_objectbox/todo/screens/widgets/delete_icon_button.dart';
 import 'package:flutter_objectbox/todo/utility/file_manager.dart';
 
 class TaskAddScreen extends StatefulWidget {
@@ -41,12 +42,26 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
               ),
               const SizedBox(height: 10),
               if (_fileData != null)
-                Expanded(
-                  child: Image.memory(
-                    _fileData!,
-                    height: 300,
-                    width: 300,
-                  ),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Expanded(
+                      child: Image.memory(
+                        _fileData!,
+                        height: 300,
+                        width: 300,
+                      ),
+                    ),
+                    DeleteIconButton(
+                      onLongPress: () {
+                        setState(
+                          () {
+                            _fileData = null;
+                          },
+                        );
+                      },
+                    ),
+                  ],
                 ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -54,7 +69,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       final Uint8List? imageBytes =
-                      await FileManager.captureImageFromCamera();
+                          await FileManager.captureImageFromCamera();
                       setState(() {
                         _fileData = imageBytes;
                       });
@@ -64,7 +79,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       final Uint8List? imageBytes =
-                      await FileManager.pickImageFromGallery();
+                          await FileManager.pickImageFromGallery();
                       setState(() {
                         _fileData = imageBytes;
                       });

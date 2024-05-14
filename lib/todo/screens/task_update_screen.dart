@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_objectbox/objectbox.dart';
 import 'package:flutter_objectbox/todo/model/task_model.dart';
+import 'package:flutter_objectbox/todo/screens/widgets/delete_icon_button.dart';
 import 'package:flutter_objectbox/todo/utility/file_manager.dart';
 
 class TaskUpdateScreen extends StatefulWidget {
@@ -65,33 +66,25 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
               const SizedBox(height: 10),
               if (fileData != null)
                 Expanded(
-                  child: Stack(alignment: Alignment.center, children: [
-                    Image.memory(
-                      fileData!,
-                      height: 300,
-                      width: 300,
-                    ),
-                    GestureDetector(
-                      onLongPress: (){
-                        setState(() {
-                          fileData = null;
-                        });
-                      },
-                      child: Container(
-                        width: 60.0, // Adjust width and height as needed
-                        height: 60.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.red.withOpacity(0.7), // Adjust opacity here (0.0 to 1.0)
-                        ),
-                        child: Icon(
-                          Icons.close,
-                          color: Colors.white.withOpacity(0.7),
-                          size: 50,
-                        ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.memory(
+                        fileData!,
+                        height: 300,
+                        width: 300,
                       ),
-                    )
-                  ]),
+                      DeleteIconButton(
+                        onLongPress: () {
+                          setState(
+                            () {
+                              fileData = null;
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               const SizedBox(height: 10),
               Row(
