@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_objectbox/objectbox.dart';
 import 'package:flutter_objectbox/todo/model/task_model.dart';
 import 'package:flutter_objectbox/todo/utility/file_manager.dart';
@@ -22,11 +24,13 @@ class TaskUpdateScreen extends StatefulWidget {
 class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  Uint8List? fileData;
 
   @override
   void initState() {
     nameController.text = widget.task.name;
     descriptionController.text = widget.task.description;
+    fileData = widget.task.fileData;
     super.initState();
   }
 
@@ -59,13 +63,35 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
                 },
               ),
               const SizedBox(height: 10),
-              if (widget.task.fileData != null)
+              if (fileData != null)
                 Expanded(
-                  child: Image.memory(
-                    widget.task.fileData!,
-                    height: 300,
-                    width: 300,
-                  ),
+                  child: Stack(alignment: Alignment.center, children: [
+                    Image.memory(
+                      fileData!,
+                      height: 300,
+                      width: 300,
+                    ),
+                    GestureDetector(
+                      onLongPress: (){
+                        setState(() {
+                          fileData = null;
+                        });
+                      },
+                      child: Container(
+                        width: 60.0, // Adjust width and height as needed
+                        height: 60.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.red.withOpacity(0.7), // Adjust opacity here (0.0 to 1.0)
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white.withOpacity(0.7),
+                          size: 50,
+                        ),
+                      ),
+                    )
+                  ]),
                 ),
               const SizedBox(height: 10),
               Row(
@@ -74,9 +100,9 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       final Uint8List? imageBytes =
-                      await FileManager.captureImageFromCamera();
+                          await FileManager.captureImageFromCamera();
                       setState(() {
-                        widget.task.fileData = imageBytes;
+                        fileData = imageBytes;
                       });
                     },
                     child: const Icon(Icons.camera_alt),
@@ -84,9 +110,9 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       final Uint8List? imageBytes =
-                      await FileManager.pickImageFromGallery();
+                          await FileManager.pickImageFromGallery();
                       setState(() {
-                        widget.task.fileData = imageBytes;
+                        fileData = imageBytes;
                       });
                     },
                     child: const Icon(Icons.image),
@@ -95,6 +121,7 @@ class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
               ),
               MaterialButton(
                 onPressed: () {
+                  widget.task.fileData = fileData;
                   widget.objectBox.updateTask(widget.task);
                   Navigator.pop(context);
                 },
